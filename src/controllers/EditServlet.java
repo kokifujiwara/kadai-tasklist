@@ -33,21 +33,24 @@ public class EditServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+        EntityManager em = DBUtil.createEntityManager();
 
-	    EntityManager em = DBUtil.createEntityManager();
+        Task t = em.find(Task.class, Integer.parseInt(request.getParameter("id")));
 
-	    Task t = em.find(Task.class, Integer.parseInt(request.getParameter("id")));
+        em.close();
 
-	    em.close();
-
-        request.setAttribute("tasks", t);
+        request.setAttribute("task", t);
         request.setAttribute("_token", request.getSession().getId());
+
+        if(t != null) {
+            request.getSession().setAttribute("message_id", t.getId());
+        }
+
 
         request.getSession().setAttribute("task_id", t.getId());
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/edit.jsp");
         rd.forward(request, response);
-
 	}
 
 }
