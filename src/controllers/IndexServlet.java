@@ -40,8 +40,7 @@ public class IndexServlet extends HttpServlet {
         int page = 1;
         try {
             page = Integer.parseInt(request.getParameter("page"));
-        } catch(NumberFormatException e) {}
-
+        } catch(NumberFormatException t) {}
 
         List<Task> tasks = em.createNamedQuery("getAllTasks", Task.class)
                 .setFirstResult(15 * (page - 1))
@@ -54,7 +53,7 @@ public class IndexServlet extends HttpServlet {
         em.close();
 
         request.setAttribute("tasks", tasks);
-        request.setAttribute("messages_count", tasks_count);
+        request.setAttribute("tasks_count", tasks_count);
         request.setAttribute("page", page);
 
 
